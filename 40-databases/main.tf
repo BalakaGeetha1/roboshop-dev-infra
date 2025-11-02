@@ -39,86 +39,86 @@ resource "terraform_data" "mongodb" {
   }
 }
 
-resource "aws_instance" "redis" {
-    ami = local.ami_id
-    instance_type = "t3.micro"
-    vpc_security_group_ids = [local.redis_sg_id]
-    subnet_id = local.database_subnet_id
-tags = merge (
-local.common_tags,
-        {
-            Name = "${local.common_name_suffix}-redis" #roboshop-dev-mongodb
-        }
-    )
-}
+# resource "aws_instance" "redis" {
+#     ami = local.ami_id
+#     instance_type = "t3.micro"
+#     vpc_security_group_ids = [local.redis_sg_id]
+#     subnet_id = local.database_subnet_id
+# tags = merge (
+# local.common_tags,
+#         {
+#             Name = "${local.common_name_suffix}-redis" #roboshop-dev-mongodb
+#         }
+#     )
+# }
 
-resource "terraform_data" "redis" {
-  triggers_replace = [
-    aws_instance.redis.id
-  ]
+# resource "terraform_data" "redis" {
+#   triggers_replace = [
+#     aws_instance.redis.id
+#   ]
   
-  connection {
-    type     = "ssh"
-    user     = "ec2-user"
-    password = "DevOps321"
-    host     = aws_instance.redis.private_ip
-  }
+#   connection {
+#     type     = "ssh"
+#     user     = "ec2-user"
+#     password = "DevOps321"
+#     host     = aws_instance.redis.private_ip
+#   }
 
-  # terraform copies this file to mongodb server
-  provisioner "file" {
-    source = "bootstrap.sh"
-    destination = "/tmp/bootstrap.sh"
-  }
+#   # terraform copies this file to mongodb server
+#   provisioner "file" {
+#     source = "bootstrap.sh"
+#     destination = "/tmp/bootstrap.sh"
+#   }
 
-  provisioner "remote-exec" {
-    inline = [
-         "chmod +x /tmp/bootstrap.sh",
-         "sudo sh /tmp/bootstrap.sh redis"
-        # "sudo sh /tmp/bootstrap.sh mongodb"
-        #"echo hello world"
-    ]
-  }
-}
+#   provisioner "remote-exec" {
+#     inline = [
+#          "chmod +x /tmp/bootstrap.sh",
+#          "sudo sh /tmp/bootstrap.sh redis"
+#         # "sudo sh /tmp/bootstrap.sh mongodb"
+#         #"echo hello world"
+#     ]
+#   }
+# }
 
-#rabbitmq
+# #rabbitmq
 
-resource "aws_instance" "rabbitmq" {
-    ami = local.ami_id
-    instance_type = "t3.micro"
-    vpc_security_group_ids = [local.rabbitmq_sg_id]
-    subnet_id = local.database_subnet_id
-tags = merge (
-local.common_tags,
-        {
-            Name = "${local.common_name_suffix}-rabbitmq" #roboshop-dev-mongodb
-        }
-    )
-}
+# resource "aws_instance" "rabbitmq" {
+#     ami = local.ami_id
+#     instance_type = "t3.micro"
+#     vpc_security_group_ids = [local.rabbitmq_sg_id]
+#     subnet_id = local.database_subnet_id
+# tags = merge (
+# local.common_tags,
+#         {
+#             Name = "${local.common_name_suffix}-rabbitmq" #roboshop-dev-mongodb
+#         }
+#     )
+# }
 
-resource "terraform_data" "rabbitmq" {
-  triggers_replace = [
-    aws_instance.redis.id
-  ]
+# resource "terraform_data" "rabbitmq" {
+#   triggers_replace = [
+#     aws_instance.redis.id
+#   ]
   
-  connection {
-    type     = "ssh"
-    user     = "ec2-user"
-    password = "DevOps321"
-    host     = aws_instance.rabbitmq.private_ip
-  }
+#   connection {
+#     type     = "ssh"
+#     user     = "ec2-user"
+#     password = "DevOps321"
+#     host     = aws_instance.rabbitmq.private_ip
+#   }
 
-  # terraform copies this file to mongodb server
-  provisioner "file" {
-    source = "bootstrap.sh"
-    destination = "/tmp/bootstrap.sh"
-  }
+#   # terraform copies this file to mongodb server
+#   provisioner "file" {
+#     source = "bootstrap.sh"
+#     destination = "/tmp/bootstrap.sh"
+#   }
 
-  provisioner "remote-exec" {
-    inline = [
-         "chmod +x /tmp/bootstrap.sh",
-         "sudo sh /tmp/bootstrap.sh rabbitmq"
-        # "sudo sh /tmp/bootstrap.sh mongodb"
-        #"echo hello world"
-    ]
-  }
-}
+#   provisioner "remote-exec" {
+#     inline = [
+#          "chmod +x /tmp/bootstrap.sh",
+#          "sudo sh /tmp/bootstrap.sh rabbitmq"
+#         # "sudo sh /tmp/bootstrap.sh mongodb"
+#         #"echo hello world"
+#     ]
+#   }
+# }
