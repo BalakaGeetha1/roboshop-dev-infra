@@ -15,14 +15,15 @@ module "sg" {
   source = "git::https://github.com/BalakaGeetha1/terraform-aws-sg.git?ref=main"
   project_name = var.project_name
   environment = var.environment
-  #sg_name = "mongodb"
+  # sg_name = "mongo-db"
+  # sg_description = "created for mongo db"
   sg_name = var.sg_names[count.index]
   sg_description = "Created for ${var.sg_names[count.index]}"
   vpc_id =  local.vpc_id
 }
 
 
-# Frontend accepting traffic from frontend ALB
+# #Frontend accepting traffic from frontend ALB
 # resource "aws_security_group_rule" "frontend_frontend_alb" {
 #   type              = "ingress"
 #   security_group_id = module.sg[9].sg_id # frontend SG ID

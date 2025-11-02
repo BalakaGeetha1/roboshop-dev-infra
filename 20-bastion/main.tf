@@ -10,4 +10,3 @@ local.common_tags,
         }
     )
 }
-
