@@ -5,7 +5,8 @@ resource "aws_lb" "backend_alb" {
   security_groups    = [local.backend_alb_sg_id]
   subnets            = local.private_subnet_ids
 
-  enable_deletion_protection = true # prevents acceidental deletion from UI
+  #enable_deletion_protection = true # prevents acceidental deletion from UI
+  enable_deletion_protection = false 
 
 tags = merge (
 local.common_tags,
