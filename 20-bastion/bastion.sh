@@ -2,8 +2,9 @@
 
 #growing /home volume for terraform purpose
 growpart /dev/nvme0n1 4
+#lvextend -L +30G /dev/mapper/rootVol
 lvextend -L +30G /dev/RootVG/rootVol
-xfs-growfs /home
+xfs_growfs /home
 
 sudo yum install -y yum-utils
 sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
